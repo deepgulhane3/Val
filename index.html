@@ -52,6 +52,8 @@
             animation: pop 0.8s ease;
         }
 
+        
+
         @keyframes pop {
             0% { transform: scale(0.8); }
             100% { transform: scale(1); }
@@ -91,6 +93,73 @@
             top: 70px;
             transform: translateX(-50%);
         }
+
+        /* Modal Overlay */
+        .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Modal Box */
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            transform: scale(0.7);
+            animation: none;
+        }
+
+        .modal.show .modal-content {
+            animation: modalPop 0.4s ease forwards;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -103,6 +172,15 @@
         <button id="noBtn">No 💔</button>
     </div>
 </div>
+
+<div class="modal" id="loveModal">
+    <div class="modal-content">
+        <h2>YAYYY 💖💖</h2>
+        <p>I knew it 😍🥰<br/>You just made my day!</p>
+        <button id="closeModal">OK 💕</button>
+    </div>
+</div>
+
 
 <!-- Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -138,7 +216,22 @@
         moveAndShrinkNo();
     });
 
-    // YES CONFETTI
+    // // YES CONFETTI
+    // yesBtn.addEventListener("click", () => {
+    //     confetti({
+    //         particleCount: 200,
+    //         spread: 90,
+    //         origin: { y: 0.6 }
+    //     });
+
+    //     setTimeout(() => {
+    //         alert("YAYYY 💖💖 I knew it 😍🥰");
+    //     }, 500);
+    // });
+
+    const modal = document.getElementById("loveModal");
+    const closeModal = document.getElementById("closeModal");
+
     yesBtn.addEventListener("click", () => {
         confetti({
             particleCount: 200,
@@ -147,9 +240,14 @@
         });
 
         setTimeout(() => {
-            alert("YAYYY 💖💖 I knew it 😍🥰");
-        }, 500);
+            modal.classList.add("show");
+        }, 400);
     });
+
+    closeModal.addEventListener("click", () => {
+        modal.classList.remove("show");
+    });
+
 
     // Floating hearts generator
     function createHeart() {
