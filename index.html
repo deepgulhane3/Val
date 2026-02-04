@@ -221,6 +221,57 @@
     50% { transform: translateY(-10px); }
 }
 
+/* Gift Modal */
+.gift-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 30;
+}
+
+.gift-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.gift-modal-content {
+    background: white;
+    padding: 32px;
+    border-radius: 26px;
+    text-align: center;
+    width: 85%;
+    max-width: 320px;
+    animation: modalPop 0.4s ease forwards;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.gift-modal-content h2 {
+    color: #e91e63;
+    margin-bottom: 10px;
+}
+
+.gift-modal-content p {
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.gift-modal-content button {
+    background: #e91e63;
+    color: white;
+    border: none;
+    padding: 14px 34px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 
     </style>
 </head>
@@ -249,6 +300,18 @@
         <h2>As you said YES 💖</h2>
         <p>Click below to unbox your gift ✨</p>
         <button id="openGiftBtn">Open the Box 🎁</button>
+    </div>
+</div>
+
+<div class="gift-modal" id="giftModal">
+    <div class="gift-modal-content">
+        <h2>💖 Loveuu 😘</h2>
+        <p>
+            Chota gift anla ahe<br/>
+            maza bag madhe 👜✨<br/><br/>
+            <strong>Go and check 💝</strong>
+        </p>
+        <button id="closeGiftModal">Awww 🥰</button>
     </div>
 </div>
 
@@ -322,6 +385,9 @@
 
     const surprisePage = document.getElementById("surprisePage");
 const openGiftBtn = document.getElementById("openGiftBtn");
+const giftModal = document.getElementById("giftModal");
+const closeGiftModal = document.getElementById("closeGiftModal");
+
 
 yesBtn.addEventListener("click", () => {
     confetti({
@@ -338,13 +404,14 @@ yesBtn.addEventListener("click", () => {
 
 openGiftBtn.addEventListener("click", () => {
     setTimeout(() => {
-        alert(
-          "Loveuu 😘\n\n" +
-          "Chota gift anla ahe maza bag madhe…\n" +
-          "Go and check 💝"
-        );
+        giftModal.classList.add("show");
     }, 300);
 });
+
+closeGiftModal.addEventListener("click", () => {
+    giftModal.classList.remove("show");
+});
+
 
 
     // Floating hearts generator
