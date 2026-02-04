@@ -160,6 +160,68 @@
             cursor: pointer;
         }
 
+        /* Surprise Page */
+.surprise-page {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 20;
+}
+
+.surprise-page.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.surprise-box {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    text-align: center;
+    width: 85%;
+    max-width: 340px;
+    animation: pop 0.6s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.surprise-box h2 {
+    color: #e91e63;
+    margin: 15px 0 10px;
+}
+
+.surprise-box p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.surprise-box button {
+    background: #e91e63;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Gift animation */
+.gift {
+    font-size: 70px;
+    animation: bounce 1.2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+
     </style>
 </head>
 <body>
@@ -175,11 +237,21 @@
 
 <div class="modal" id="loveModal">
     <div class="modal-content">
-        <h2>YAYYY 💖💖</h2>
+        <h2>YAYYY Babdiiii 💖💖</h2>
         <p>I knew it 😍🥰<br/>You just made my day!</p>
         <button id="closeModal">OK 💕</button>
     </div>
 </div>
+
+<div class="surprise-page" id="surprisePage">
+    <div class="surprise-box">
+        <div class="gift">🎁</div>
+        <h2>As you said YES 💖</h2>
+        <p>Click below to unbox your gift ✨</p>
+        <button id="openGiftBtn">Open the Box 🎁</button>
+    </div>
+</div>
+
 
 
 <!-- Confetti -->
@@ -229,24 +301,50 @@
     //     }, 500);
     // });
 
-    const modal = document.getElementById("loveModal");
-    const closeModal = document.getElementById("closeModal");
+    // const modal = document.getElementById("loveModal");
+    // const closeModal = document.getElementById("closeModal");
 
-    yesBtn.addEventListener("click", () => {
-        confetti({
-            particleCount: 200,
-            spread: 90,
-            origin: { y: 0.6 }
-        });
+    // yesBtn.addEventListener("click", () => {
+    //     confetti({
+    //         particleCount: 200,
+    //         spread: 90,
+    //         origin: { y: 0.6 }
+    //     });
 
-        setTimeout(() => {
-            modal.classList.add("show");
-        }, 400);
+    //     setTimeout(() => {
+    //         modal.classList.add("show");
+    //     }, 400);
+    // });
+
+    // closeModal.addEventListener("click", () => {
+    //     modal.classList.remove("show");
+    // });
+
+    const surprisePage = document.getElementById("surprisePage");
+const openGiftBtn = document.getElementById("openGiftBtn");
+
+yesBtn.addEventListener("click", () => {
+    confetti({
+        particleCount: 200,
+        spread: 90,
+        origin: { y: 0.6 }
     });
 
-    closeModal.addEventListener("click", () => {
-        modal.classList.remove("show");
-    });
+    setTimeout(() => {
+        modal.classList.remove("show"); // close first modal
+        surprisePage.classList.add("show"); // open surprise page
+    }, 500);
+});
+
+openGiftBtn.addEventListener("click", () => {
+    setTimeout(() => {
+        alert(
+          "Loveuu 😘\n\n" +
+          "Chota gift anla ahe maza bag madhe…\n" +
+          "Go and check 💝"
+        );
+    }, 300);
+});
 
 
     // Floating hearts generator
