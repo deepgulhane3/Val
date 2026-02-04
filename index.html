@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Be My Valentine 💖</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            width: 90%;
+            max-width: 360px;
+            z-index: 2;
+            animation: pop 0.8s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #e91e63;
+            margin-bottom: 25px;
+        }
+
+        .buttons {
+            position: relative;
+            height: 140px;
+        }
+
+        button {
+            padding: 12px 26px;
+            font-size: 18px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn {
+            background: #e91e63;
+            color: white;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #noBtn {
+            background: #ddd;
+            color: black;
+            left: 50%;
+            top: 70px;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 💔</button>
+    </div>
+</div>
+
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const container = document.querySelector(".buttons");
+
+    let scale = 1;
+
+    function moveAndShrinkNo() {
+        const maxX = container.clientWidth - noBtn.offsetWidth;
+        const maxY = container.clientHeight - noBtn.offsetHeight;
+
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        scale -= 0.1;
+        if (scale < 0.4) scale = 0.4;
+
+        noBtn.style.left = `${x}px`;
+        noBtn.style.top = `${y}px`;
+        noBtn.style.transform = `scale(${scale})`;
+    }
+
+    // Desktop
+    noBtn.addEventListener("mouseover", moveAndShrinkNo);
+
+    // Mobile
+    noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        moveAndShrinkNo();
+    });
+
+    // YES CONFETTI
+    yesBtn.addEventListener("click", () => {
+        confetti({
+            particleCount: 200,
+            spread: 90,
+            origin: { y: 0.6 }
+        });
+
+        setTimeout(() => {
+            alert("YAYYY 💖💖 I knew it 😍🥰");
+        }, 500);
+    });
+
+    // Floating hearts generator
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 15 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+    }
+
+    setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
