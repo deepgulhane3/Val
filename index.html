@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Be My Valentine 💖</title>
+<title>Be My Valentine? 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+/* ========== BASE ========== */
 body {
     margin: 0;
     height: 100vh;
@@ -13,165 +16,163 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     font-family: "Poppins", sans-serif;
+    background: #ff9a9e;
 }
 
-/* Love mode pulse */
-body.love-mode {
-    animation: bgPulse 3s infinite alternate;
+/* ========== SLIDESHOW ========== */
+.slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    filter: brightness(0.65) blur(1px);
+    transform: scale(1.05);
 }
 
-@keyframes bgPulse {
-    from { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
-    to { background: linear-gradient(135deg, #ff6f91, #ffc1cc); }
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 6s ease;
+    transform: scale(1.05);
 }
 
-/* Floating hearts & petals */
-.heart {
+.slide.active {
+    opacity: 1;
+    transform: scale(1.12);
+}
+
+/* ========== FLOATING HEARTS ========== */
+.heart-bg {
     position: absolute;
     bottom: -20px;
     font-size: 20px;
     animation: floatUp 6s linear infinite;
     opacity: 0.8;
+    text-shadow: 0 0 6px rgba(255,105,180,.6);
 }
 
 @keyframes floatUp {
     0% { transform: translateY(0) scale(1); opacity: 0; }
     20% { opacity: 1; }
-    100% { transform: translateY(-110vh) scale(1.6); opacity: 0; }
+    100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
 }
 
-/* Card */
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 24px;
+/* ========== GLASS CARD ========== */
+.glass-card {
+    background: rgba(255,255,255,.25);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,.4);
+    padding: 40px;
+    border-radius: 30px;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
     width: 90%;
-    max-width: 360px;
-    z-index: 2;
-    animation: pop 0.8s ease;
+    max-width: 400px;
+    animation: pop .8s ease;
 }
 
 @keyframes pop {
-    from { transform: scale(0.8); }
-    to { transform: scale(1); }
+    from { transform: scale(.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 h1 {
-    color: #e91e63;
+    font-family: "Great Vibes", cursive;
+    font-size: 3.5rem;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,.25);
+}
+
+p {
+    color: rgba(255,255,255,.9);
+    font-style: italic;
     margin-bottom: 25px;
 }
 
+/* ========== BUTTONS ========== */
 .buttons {
-    position: relative;
-    height: 140px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 button {
-    padding: 12px 28px;
+    padding: 12px 30px;
     font-size: 18px;
-    border-radius: 30px;
+    border-radius: 50px;
     border: none;
     cursor: pointer;
-    position: absolute;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
 }
 
+/* YES BUTTON – HEARTBEAT */
 #yesBtn {
-    background: #e91e63;
+    background: linear-gradient(45deg,#ff416c,#ff4b2b);
     color: white;
-    left: 50%;
-    transform: translateX(-50%);
+    animation: heartbeat 2s infinite;
 }
 
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.05); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* NO BUTTON */
 #noBtn {
-    background: #ddd;
-    color: black;
-    left: 50%;
-    top: 70px;
-    transform: translateX(-50%);
+    background: white;
+    color: #ff416c;
 }
 
-/* Surprise Page */
-.surprise-page {
+/* ========== OVERLAYS ========== */
+.overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    background: linear-gradient(135deg,#ff9a9e,#fecfef);
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity .5s ease;
     z-index: 10;
 }
 
-.surprise-page.show {
+.overlay.show {
     opacity: 1;
     pointer-events: auto;
 }
 
-.surprise-box {
-    background: white;
-    padding: 32px;
-    border-radius: 26px;
-    text-align: center;
-    width: 85%;
-    max-width: 340px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-}
-
+/* ========== GIFT ========== */
 .gift {
-    font-size: 70px;
-    animation: bounce 1.2s infinite;
+    font-size: 80px;
+    animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
     0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-15px); }
 }
 
-/* Gift Modal */
-.gift-modal {
+/* MUSIC */
+.music-toggle {
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
+    top: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,.6);
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 20;
-}
-
-.gift-modal.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.gift-modal-content {
-    background: white;
-    padding: 34px;
-    border-radius: 26px;
-    text-align: center;
-    width: 85%;
-    max-width: 320px;
-}
-
-.gift-modal-content h2 {
-    color: #e91e63;
-}
-
-.gift-modal-content button {
-    background: #e91e63;
-    color: white;
-    border: none;
-    padding: 14px 34px;
-    border-radius: 30px;
-    font-size: 16px;
     cursor: pointer;
 }
 </style>
@@ -179,115 +180,124 @@ button {
 
 <body>
 
-<div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
-    <div class="buttons">
-        <button id="yesBtn">Yes ❤️</button>
-        <button id="noBtn">No 💔</button>
-    </div>
-</div>
-
-<!-- Surprise -->
-<div class="surprise-page" id="surprisePage">
-    <div class="surprise-box">
-        <div class="gift">🎁</div>
-        <h2>You said YES 💖</h2>
-        <p>Click to unbox your surprise ✨</p>
-        <button id="openGiftBtn">Open 🎁</button>
-    </div>
-</div>
-
-<!-- Gift -->
-<div class="gift-modal" id="giftModal">
-    <div class="gift-modal-content">
-        <h2>Loveuu Babdiiii 😘</h2>
-        <p id="loveText"></p>
-        <small style="color:#e91e63; opacity:0.8;">
-            This is just the beginning… ♾️💞
-        </small><br/><br/>
-        <button id="closeGiftModal">Awww 🥰</button>
-    </div>
-</div>
-
-<!-- Music -->
 <audio id="bgMusic" loop>
   <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1caaed3e52.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Confetti -->
+<div class="music-toggle" id="musicBtn">🎵</div>
+
+<!-- SLIDESHOW -->
+<div class="slideshow">
+  <div class="slide active"></div>
+  <div class="slide"></div>
+  <div class="slide"></div>
+</div>
+
+<!-- MAIN CARD -->
+<div class="glass-card">
+  <h1>Will you be my Valentine? 🌹</h1>
+  <p>I’ve been wanting to ask you this for a while…</p>
+  <div class="buttons">
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No 💔</button>
+  </div>
+</div>
+
+<!-- SURPRISE -->
+<div class="overlay" id="surprise">
+  <div class="glass-card">
+    <div class="gift">🎁</div>
+    <h2>Yay Babdiiii 💖</h2>
+    <p>I knew it was you.</p>
+    <button id="openGift">Open ✨</button>
+  </div>
+</div>
+
+<!-- GIFT -->
+<div class="overlay" id="gift">
+  <div class="glass-card">
+    <h1 style="color:#ff416c">I Love You 😘</h1>
+    <p>
+      Chota gift anla ahe 🥰<br>
+      Maza bag madhe 👜✨<br><br>
+      <strong>Go and check 💝</strong>
+    </p>
+    <button id="closeGift">Awww 🥺</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-const noBtn = document.getElementById("noBtn");
+/* ===== MEMORY SLIDESHOW (GitHub images) ===== */
+const images = [
+  "memories/img1.jpg",
+  "memories/img2.jpg",
+  "memories/img3.jpg"
+];
+
+const slides = document.querySelectorAll(".slide");
+let index = 0;
+
+// preload
+images.forEach(src => { const i = new Image(); i.src = src; });
+
+slides.forEach((s,i)=> s.style.backgroundImage = `url('${images[i]}')`);
+
+setInterval(() => {
+  slides[index].classList.remove("active");
+  index = (index + 1) % images.length;
+  slides[index % slides.length].classList.add("active");
+}, 4000);
+
+/* ===== BUTTON LOGIC ===== */
 const yesBtn = document.getElementById("yesBtn");
-const surprisePage = document.getElementById("surprisePage");
-const openGiftBtn = document.getElementById("openGiftBtn");
-const giftModal = document.getElementById("giftModal");
-const closeGiftModal = document.getElementById("closeGiftModal");
+const noBtn = document.getElementById("noBtn");
+const surprise = document.getElementById("surprise");
+const gift = document.getElementById("gift");
 const bgMusic = document.getElementById("bgMusic");
-const loveText = document.getElementById("loveText");
+const musicBtn = document.getElementById("musicBtn");
 
-let scale = 1;
+let playing = false;
 
-// NO button tease
-function moveNo() {
-    scale -= 0.1;
-    if (scale < 0.4) scale = 0.4;
-    noBtn.style.transform = `translate(${Math.random()*120-60}px, ${Math.random()*120-60}px) scale(${scale})`;
-}
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
+musicBtn.onclick = () => {
+  playing ? bgMusic.pause() : bgMusic.play();
+  musicBtn.textContent = playing ? "🎵" : "⏸️";
+  playing = !playing;
+};
 
-// YES click
-yesBtn.addEventListener("click", () => {
-    document.body.classList.add("love-mode");
-    bgMusic.volume = 0.4;
-    bgMusic.play();
+noBtn.onmouseover = () => {
+  noBtn.style.position = "fixed";
+  noBtn.style.left = Math.random()*80 + "vw";
+  noBtn.style.top = Math.random()*80 + "vh";
+};
 
-    confetti({ particleCount: 250, spread: 100, origin: { y: 0.6 } });
+yesBtn.onclick = () => {
+  if (!playing) bgMusic.play();
+  confetti({ particleCount: 200, spread: 90, origin: { y: .6 } });
+  noBtn.style.display = "none";
+  setTimeout(()=>surprise.classList.add("show"),800);
+};
 
-    setTimeout(() => surprisePage.classList.add("show"), 600);
-});
+document.getElementById("openGift").onclick = () => {
+  gift.classList.add("show");
+};
 
-// Gift open
-openGiftBtn.addEventListener("click", () => {
-    giftModal.classList.add("show");
-    typeLove();
-});
+document.getElementById("closeGift").onclick = () => {
+  gift.classList.remove("show");
+  surprise.classList.remove("show");
+};
 
-closeGiftModal.addEventListener("click", () => giftModal.classList.remove("show"));
-
-// Typewriter love text
-const message =
-"Chota gift anla ahe 🥰\n" +
-"Maza bag madhe 👜✨\n\n" +
-"Tula pahilya pasun\n" +
-"khup special vatta 💖";
-
-let i = 0;
-function typeLove() {
-    loveText.innerHTML = "";
-    i = 0;
-    (function typing(){
-        if(i < message.length){
-            loveText.innerHTML += message[i] === "\n" ? "<br>" : message[i];
-            i++;
-            setTimeout(typing, 60);
-        }
-    })();
-}
-
-// Floating hearts & petals
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = ["💖","🌸","💘","🌹"][Math.floor(Math.random()*4)];
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = Math.random()*20 + 15 + "px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),7000);
-}
-setInterval(createHeart, 400);
+/* ===== FLOATING HEARTS ===== */
+setInterval(()=>{
+  const h = document.createElement("div");
+  h.className = "heart-bg";
+  h.innerText = ["💖","💘","🌹","✨"][Math.floor(Math.random()*4)];
+  h.style.left = Math.random()*100 + "vw";
+  h.style.fontSize = Math.random()*20 + 12 + "px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}, 350);
 </script>
 
 </body>
