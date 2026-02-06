@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Be My Valentine 💖</title>
+    <title>Be My Valentine? 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -13,422 +14,353 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            background: #ff9a9e;
             font-family: "Poppins", sans-serif;
         }
 
+        /* Background Photo Slideshow */
+        .slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: brightness(0.7); /* Darkens photos slightly so text pops */
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
         /* Floating hearts */
-        .heart {
+        .heart-bg {
             position: absolute;
             bottom: -20px;
             font-size: 20px;
             animation: floatUp 6s linear infinite;
-            opacity: 0.7;
+            opacity: 0.8;
+            z-index: 0;
+            text-shadow: 0 0 5px rgba(255,105,180, 0.6);
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-110vh) scale(1.5);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
         }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            border-radius: 30px;
             text-align: center;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             width: 90%;
-            max-width: 360px;
+            max-width: 400px;
             z-index: 2;
             animation: pop 0.8s ease;
         }
 
-        
-
         @keyframes pop {
-            0% { transform: scale(0.8); }
-            100% { transform: scale(1); }
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         h1 {
-            color: #e91e63;
-            margin-bottom: 25px;
+            color: #fff;
+            font-family: "Great Vibes", cursive;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.2;
+        }
+
+        h2 {
+            color: #d6336c;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.1rem;
         }
 
         .buttons {
-            position: relative;
-            height: 140px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            min-height: 60px; /* Prevent jumping */
         }
 
         button {
-            padding: 12px 26px;
+            padding: 12px 30px;
             font-size: 18px;
-            border-radius: 30px;
+            border-radius: 50px;
             border: none;
             cursor: pointer;
-            position: absolute;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: 600;
         }
 
         #yesBtn {
-            background: #e91e63;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
             color: white;
-            left: 50%;
-            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        #yesBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 65, 108, 0.4);
         }
 
         #noBtn {
-            background: #ddd;
-            color: black;
-            left: 50%;
-            top: 70px;
-            transform: translateX(-50%);
+            background: white;
+            color: #ff416c;
+            position: relative; /* Changed from absolute to relative for flex layout initially */
         }
 
-        /* Modal Overlay */
-        .modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-}
+        /* Full Screen Overlays */
+        .overlay-page {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 20;
+            flex-direction: column;
+        }
 
-        .modal.show {
+        .overlay-page.show {
             opacity: 1;
             pointer-events: auto;
         }
 
-        /* Modal Box */
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            width: 85%;
-            max-width: 320px;
-            transform: scale(0.7);
-            animation: none;
-        }
-
-        .modal.show .modal-content {
-            animation: modalPop 0.4s ease forwards;
-        }
-
-        @keyframes modalPop {
-            from {
-                transform: scale(0.7);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-content h2 {
-            color: #e91e63;
-            margin-bottom: 10px;
-        }
-
-        .modal-content p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .modal-content button {
-            background: #e91e63;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-size: 16px;
+        /* Music Button */
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            z-index: 100;
+            border: 1px solid white;
         }
 
-        /* Surprise Page */
-.surprise-page {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 20;
-}
+        /* Specific Styles for Gift Box */
+        .gift-emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
 
-.surprise-page.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.surprise-box {
-    background: white;
-    padding: 30px;
-    border-radius: 24px;
-    text-align: center;
-    width: 85%;
-    max-width: 340px;
-    animation: pop 0.6s ease;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-}
-
-.surprise-box h2 {
-    color: #e91e63;
-    margin: 15px 0 10px;
-}
-
-.surprise-box p {
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-.surprise-box button {
-    background: #e91e63;
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* Gift animation */
-.gift {
-    font-size: 70px;
-    animation: bounce 1.2s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* Gift Modal */
-.gift-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 30;
-}
-
-.gift-modal.show {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.gift-modal-content {
-    background: white;
-    padding: 32px;
-    border-radius: 26px;
-    text-align: center;
-    width: 85%;
-    max-width: 320px;
-    animation: modalPop 0.4s ease forwards;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-}
-
-.gift-modal-content h2 {
-    color: #e91e63;
-    margin-bottom: 10px;
-}
-
-.gift-modal-content p {
-    font-size: 17px;
-    line-height: 1.5;
-    margin-bottom: 22px;
-}
-
-.gift-modal-content button {
-    background: #e91e63;
-    color: white;
-    border: none;
-    padding: 14px 34px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
 
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
+    <audio id="bgMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+    </audio>
+    <div class="music-toggle" id="musicBtn">🎵</div>
 
-    <div class="buttons">
-        <button id="yesBtn">Yes ❤️</button>
-        <button id="noBtn">No 💔</button>
+    <div class="slideshow">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1974');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=2069');"></div>
     </div>
-</div>
 
-<div class="modal" id="loveModal">
-    <div class="modal-content">
-        <h2>YAYYY Babdiiii 💖💖</h2>
-        <p>I knew it 😍🥰<br/>You just made my day!</p>
-        <button id="closeModal">OK 💕</button>
+    <div class="glass-card">
+        <h1>Will you be my Valentine? 🌹</h1>
+        <p style="color: #fff; margin-bottom: 20px; font-weight: 500;">(Please say yes... 🥺)</p>
+        
+        <div class="buttons">
+            <button id="yesBtn">Yes ❤️</button>
+            <button id="noBtn">No 💔</button>
+        </div>
     </div>
-</div>
 
-<div class="surprise-page" id="surprisePage">
-    <div class="surprise-box">
-        <div class="gift">🎁</div>
-        <h2>As you said YES 💖</h2>
-        <p>Click below to unbox your gift ✨</p>
-        <button id="openGiftBtn">Open the Box 🎁</button>
+    <div class="overlay-page" id="surprisePage">
+        <div class="glass-card">
+            <div class="gift-emoji">🎁</div>
+            <h2>YAYYY Babdiiii! 💖</h2>
+            <p>I knew you would say yes! 😍<br>I have a special surprise for you.</p>
+            <br>
+            <button id="openGiftBtn">Open the Gift ✨</button>
+        </div>
     </div>
-</div>
 
-<div class="gift-modal" id="giftModal">
-    <div class="gift-modal-content">
-        <h2>💖 Loveuu 😘</h2>
-        <p>
-            Chota gift anla ahe<br/>
-            maza bag madhe 👜✨<br/><br/>
-            <strong>Go and check 💝</strong>
-        </p>
-        <button id="closeGiftModal">Awww 🥰</button>
+    <div class="overlay-page" id="giftModal">
+        <div class="glass-card" style="border: 2px solid #ff416c;">
+            <h1 style="color: #ff416c; text-shadow: none;">I Love You! 😘</h1>
+            <p style="font-size: 1.2rem; line-height: 1.6;">
+                Chota gift anla ahe<br/>
+                maza bag madhe 👜✨<br/><br/>
+                <strong>Go and check now! 💝</strong>
+            </p>
+            <br>
+            <button id="closeGiftModal" style="background: #333;">Okay, running! 🏃‍♀️</button>
+        </div>
     </div>
-</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+    <script>
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn = document.getElementById("noBtn");
+        const surprisePage = document.getElementById("surprisePage");
+        const openGiftBtn = document.getElementById("openGiftBtn");
+        const giftModal = document.getElementById("giftModal");
+        const closeGiftModal = document.getElementById("closeGiftModal");
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
 
-<!-- Confetti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        // 1. Music Controls
+        let isPlaying = false;
+        musicBtn.addEventListener("click", () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.innerText = "🎵";
+            } else {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+            }
+            isPlaying = !isPlaying;
+        });
 
-<script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const container = document.querySelector(".buttons");
+        // 2. Slideshow Logic
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
 
-    let scale = 1;
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 4000); // Change photo every 4 seconds
 
-    function moveAndShrinkNo() {
-        const maxX = container.clientWidth - noBtn.offsetWidth;
-        const maxY = container.clientHeight - noBtn.offsetHeight;
+        // 3. The "No" Button Logic (Make Yes bigger)
+        let yesScale = 1;
+        
+        function shrinkNo() {
+            // Make Yes button bigger
+            yesScale += 0.2;
+            yesBtn.style.transform = `scale(${yesScale})`;
 
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
+            // Move No button randomly
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            noBtn.style.position = 'fixed'; // Switch to fixed to move freely
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
 
-        scale -= 0.1;
-        if (scale < 0.4) scale = 0.4;
+        noBtn.addEventListener("click", shrinkNo);
+        noBtn.addEventListener("mouseover", shrinkNo); // Desktop
+        
+        // 4. The "Yes" Button Logic
+        yesBtn.addEventListener("click", () => {
+            // Play music if not already playing
+            if (!isPlaying) {
+                bgMusic.play();
+                musicBtn.innerText = "⏸️";
+                isPlaying = true;
+            }
 
-        noBtn.style.left = `${x}px`;
-        noBtn.style.top = `${y}px`;
-        noBtn.style.transform = `scale(${scale})`;
-    }
+            // Massive Confetti
+            var duration = 3000;
+            var end = Date.now() + duration;
 
-    // Desktop
-    noBtn.addEventListener("mouseover", moveAndShrinkNo);
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff0000', '#ffa500']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff0000', '#ffa500']
+                });
 
-    // Mobile
-    noBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        moveAndShrinkNo();
-    });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
 
-    // // YES CONFETTI
-    // yesBtn.addEventListener("click", () => {
-    //     confetti({
-    //         particleCount: 200,
-    //         spread: 90,
-    //         origin: { y: 0.6 }
-    //     });
+            setTimeout(() => {
+                surprisePage.classList.add("show");
+            }, 1000);
+        });
 
-    //     setTimeout(() => {
-    //         alert("YAYYY 💖💖 I knew it 😍🥰");
-    //     }, 500);
-    // });
+        openGiftBtn.addEventListener("click", () => {
+            giftModal.classList.add("show");
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        });
 
-    // const modal = document.getElementById("loveModal");
-    // const closeModal = document.getElementById("closeModal");
+        closeGiftModal.addEventListener("click", () => {
+            // Optional: reset or just close
+            giftModal.classList.remove("show");
+            surprisePage.classList.remove("show");
+        });
 
-    // yesBtn.addEventListener("click", () => {
-    //     confetti({
-    //         particleCount: 200,
-    //         spread: 90,
-    //         origin: { y: 0.6 }
-    //     });
+        // 5. Floating Hearts Background
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart-bg");
+            heart.innerText = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(heart);
 
-    //     setTimeout(() => {
-    //         modal.classList.add("show");
-    //     }, 400);
-    // });
+            setTimeout(() => heart.remove(), 5000);
+        }
 
-    // closeModal.addEventListener("click", () => {
-    //     modal.classList.remove("show");
-    // });
+        setInterval(createHeart, 300);
 
-    const surprisePage = document.getElementById("surprisePage");
-const openGiftBtn = document.getElementById("openGiftBtn");
-const giftModal = document.getElementById("giftModal");
-const closeGiftModal = document.getElementById("closeGiftModal");
-
-
-yesBtn.addEventListener("click", () => {
-    confetti({
-        particleCount: 200,
-        spread: 90,
-        origin: { y: 0.6 }
-    });
-
-    setTimeout(() => {
-        surprisePage.classList.add("show"); // open surprise page
-    }, 500);
-});
-
-
-openGiftBtn.addEventListener("click", () => {
-    setTimeout(() => {
-        giftModal.classList.add("show");
-    }, 300);
-});
-
-closeGiftModal.addEventListener("click", () => {
-    giftModal.classList.remove("show");
-});
-
-
-
-    // Floating hearts generator
-    function createHeart() {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerText = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = Math.random() * 20 + 15 + "px";
-        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 7000);
-    }
-
-    setInterval(createHeart, 400);
-</script>
-
+    </script>
 </body>
 </html>
