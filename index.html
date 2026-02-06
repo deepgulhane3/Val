@@ -3,133 +3,155 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Be My Valentine? 💖</title>
+<title>Be My Valentine 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ===== BASE ===== */
-body{
-  margin:0;height:100vh;overflow:hidden;
-  display:flex;justify-content:center;align-items:center;
-  font-family:"Poppins",sans-serif;
-  background:#ff9a9e;
+/* ===== RESET ===== */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fecfef);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* ===== SLIDESHOW ===== */
-.slideshow{
-  position:fixed;inset:0;z-index:-1;
-  filter:brightness(.6) blur(1px);
-  transform:scale(1.05);
+/* ===== SLIDESHOW (MOBILE SAFE) ===== */
+.slideshow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
 }
-.slide{
-  position:absolute;inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 2s ease, transform 6s ease;
-  transform:scale(1.05);
-}
-.slide.active{opacity:1;transform:scale(1.12);}
 
-/* ===== FLOATING HEARTS ===== */
-.heart-bg{
-  position:absolute;bottom:-20px;
-  font-size:20px;
-  animation:floatUp 6s linear infinite;
-  opacity:.8;
+.slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
 }
-@keyframes floatUp{
-  0%{transform:translateY(0) scale(1);opacity:0}
-  20%{opacity:1}
-  100%{transform:translateY(-110vh) scale(1.5);opacity:0}
+
+.slide.active {
+  opacity: 1;
+}
+
+/* ===== FLOATING HEARTS (LIGHTWEIGHT) ===== */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
 }
 
 /* ===== CARD ===== */
-.glass-card{
-  background:rgba(255,255,255,.25);
-  backdrop-filter:blur(15px);
-  border:1px solid rgba(255,255,255,.4);
-  padding:38px;border-radius:30px;
-  text-align:center;
-  box-shadow:0 15px 35px rgba(0,0,0,.25);
-  width:90%;max-width:420px;
-  animation:pop .8s ease;
-}
-@keyframes pop{
-  from{transform:scale(.8);opacity:0}
-  to{transform:scale(1);opacity:1}
+.card {
+  background: rgba(255,255,255,0.92);
+  padding: 34px;
+  border-radius: 26px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 30px rgba(0,0,0,.25);
+  animation: pop .6s ease;
 }
 
-h1{
-  font-family:"Great Vibes",cursive;
-  font-size:3.4rem;color:#fff;
-  text-shadow:2px 2px 4px rgba(0,0,0,.25);
+@keyframes pop {
+  from { transform: scale(.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
-p{color:rgba(255,255,255,.9);}
+
+h1 {
+  font-family: "Great Vibes", cursive;
+  font-size: 3.2rem;
+  color: #ff416c;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
 
 /* ===== BUTTONS ===== */
-.buttons{display:flex;gap:20px;justify-content:center;margin-top:20px}
-button{
-  padding:12px 30px;
-  font-size:18px;border-radius:50px;
-  border:none;cursor:pointer;
-  font-weight:600;
-  box-shadow:0 5px 15px rgba(0,0,0,.2);
+.buttons {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
 }
 
-/* YES heartbeat */
-#yesBtn{
-  background:linear-gradient(45deg,#ff416c,#ff4b2b);
-  color:#fff;
-  animation:heartbeat 2s infinite;
-}
-@keyframes heartbeat{
-  0%{transform:scale(1)}
-  25%{transform:scale(1.05)}
-  40%{transform:scale(1)}
-  60%{transform:scale(1.08)}
-  100%{transform:scale(1)}
+button {
+  padding: 12px 28px;
+  font-size: 17px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-/* NO */
-#noBtn{background:#fff;color:#ff416c}
+#yesBtn {
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  color: white;
+  animation: heartbeat 2s infinite;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.05); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+#noBtn {
+  background: #eee;
+  color: #ff416c;
+}
 
 /* ===== OVERLAYS ===== */
-.overlay{
-  position:fixed;inset:0;
-  background:linear-gradient(135deg,#ff9a9e,#fecfef);
-  display:flex;justify-content:center;align-items:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .5s ease;
-  z-index:10;
-}
-.overlay.show{opacity:1;pointer-events:auto}
-
-/* ===== MUSIC ===== */
-.music-toggle{
-  position:fixed;top:20px;right:20px;
-  width:42px;height:42px;border-radius:50%;
-  background:rgba(255,255,255,.6);
-  display:flex;justify-content:center;align-items:center;
-  cursor:pointer;
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff9a9e, #fecfef);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+  z-index: 10;
 }
 
-/* ===== TYPE TEXT ===== */
-#loveText{
-  text-align:left;
-  font-size:1.05rem;
-  line-height:1.6;
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== TYPEWRITER TEXT ===== */
+#loveText {
+  text-align: left;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #444;
 }
 </style>
 </head>
 
 <body>
-
-<audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1caaed3e52.mp3" type="audio/mpeg">
-</audio>
-<div class="music-toggle" id="musicBtn">🎵</div>
 
 <!-- SLIDESHOW -->
 <div class="slideshow">
@@ -139,29 +161,25 @@ button{
   <div class="slide"></div>
 </div>
 
-<!-- MAIN -->
-<div class="glass-card">
-  <h1>Before I ask you something… 💖</h1>
-  <p>(Just stay here for a moment 🥺)</p>
-  <div class="buttons">
-    <button id="startBtn">Continue ✨</button>
-  </div>
+<!-- MAIN CARD -->
+<div class="card" id="startCard">
+  <h1>Hey Love… 💖</h1>
+  <p>Just stay here for a moment 🥺</p>
+  <button id="startBtn">Continue ✨</button>
 </div>
 
 <!-- LOVE MESSAGE -->
-<div class="overlay" id="lovePage">
-  <div class="glass-card">
+<div class="overlay" id="loveOverlay">
+  <div class="card">
     <h1>From My Heart 💞</h1>
     <p id="loveText"></p>
-    <div class="buttons">
-      <button id="askBtn">I’m still here 💖</button>
-    </div>
+    <button id="askBtn">I’m still here 💖</button>
   </div>
 </div>
 
 <!-- QUESTION -->
-<div class="overlay" id="questionPage">
-  <div class="glass-card">
+<div class="overlay" id="questionOverlay">
+  <div class="card">
     <h1>Will you be my Valentine? 🌹</h1>
     <div class="buttons">
       <button id="yesBtn">Yes ❤️</button>
@@ -171,8 +189,8 @@ button{
 </div>
 
 <!-- SURPRISE -->
-<div class="overlay" id="surprise">
-  <div class="glass-card">
+<div class="overlay" id="surpriseOverlay">
+  <div class="card">
     <h1>Yayyy Babdiiii 💖</h1>
     <p>You just made my heart smile 🥹</p>
   </div>
@@ -181,112 +199,115 @@ button{
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-/* ===== IMAGES (ADD MORE IF YOU WANT) ===== */
-const images=[
- "memories/img1.jpg",
- "memories/img2.jpg",
- "memories/img3.jpg",
- "memories/img4.jpg",
- "memories/img5.jpg",
- "memories/img6.jpg",
- "memories/img7.jpg",
- "memories/img8.jpg",
- "memories/img9.jpg"
-];
+/* ===== IMAGE LIST (MOBILE SAFE) ===== */
+const images = window.innerWidth < 768
+  ? [
+      "memories/img1.jpg",
+      "memories/img2.jpg",
+      "memories/img3.jpg",
+      "memories/img4.jpg"
+    ]
+  : [
+      "memories/img1.jpg",
+      "memories/img2.jpg",
+      "memories/img3.jpg",
+      "memories/img4.jpg",
+      "memories/img5.jpg",
+      "memories/img6.jpg",
+      "memories/img7.jpg",
+      "memories/img8.jpg"
+    ];
 
-const slides=document.querySelectorAll(".slide");
-let slideIndex=0;
-images.forEach(i=>{const img=new Image();img.src=i});
-slides.forEach((s,i)=>s.style.backgroundImage=`url('${images[i%images.length]}')`);
-setInterval(()=>{
- slides[slideIndex%slides.length].classList.remove("active");
- slideIndex++;
- slides[slideIndex%slides.length].classList.add("active");
-},4000);
+const slides = document.querySelectorAll(".slide");
+let sIndex = 0;
 
-/* ===== MUSIC ===== */
-const bgMusic=document.getElementById("bgMusic");
-const musicBtn=document.getElementById("musicBtn");
-let playing=false;
-musicBtn.onclick=()=>{
- playing?bgMusic.pause():bgMusic.play();
- musicBtn.textContent=playing?"🎵":"⏸️";
- playing=!playing;
-};
+// preload
+images.forEach(src => { const i = new Image(); i.src = src; });
+
+// init
+slides.forEach((s,i)=>{
+  s.style.backgroundImage = `url('${images[i % images.length]}')`;
+});
+
+// slideshow
+setInterval(() => {
+  slides[sIndex % slides.length].classList.remove("active");
+  sIndex++;
+  slides[sIndex % slides.length].classList.add("active");
+}, 4000);
 
 /* ===== FLOW ===== */
-const startBtn=document.getElementById("startBtn");
-const lovePage=document.getElementById("lovePage");
-const questionPage=document.getElementById("questionPage");
-const surprise=document.getElementById("surprise");
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
+const startBtn = document.getElementById("startBtn");
+const loveOverlay = document.getElementById("loveOverlay");
+const questionOverlay = document.getElementById("questionOverlay");
+const surpriseOverlay = document.getElementById("surpriseOverlay");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
 
-startBtn.onclick=()=>{
- if(!playing){bgMusic.play();playing=true;musicBtn.textContent="⏸️";}
- lovePage.classList.add("show");
- typeLove();
+startBtn.onclick = () => {
+  loveOverlay.classList.add("show");
+  typeLove();
 };
 
-/* ===== TYPEWRITER LOVE ===== */
-const loveText=document.getElementById("loveText");
-const message=`From the moment you came into my life,
-everything slowly started feeling lighter…
+/* ===== TYPEWRITER ===== */
+const loveText = document.getElementById("loveText");
+const message =
+`From the moment you came into my life,
+everything slowly started feeling lighter.
 
-Your smile became my favorite place,
+Your smile became my peace,
 your voice my calm,
 your presence my comfort.
 
-I don’t know when it happened,
-but somewhere between our talks,
-laughs, and silences…
+Somewhere between our talks,
+our laughs,
+and our silences…
 
 you became home for me.
 
-And today,
-I just want to ask you something
-from the deepest corner of my heart…`;
+And now I just want to ask you
+something from my heart…`;
 
-let i=0;
-function typeLove(){
- loveText.innerHTML="";
- i=0;
- (function t(){
-  if(i<message.length){
-   loveText.innerHTML+=message[i]==="\n"?"<br>":message[i];
-   i++;setTimeout(t,45);
-  }
- })();
+let i = 0;
+function typeLove() {
+  loveText.innerHTML = "";
+  i = 0;
+  (function t(){
+    if(i < message.length){
+      loveText.innerHTML += message[i] === "\n" ? "<br>" : message[i];
+      i++;
+      setTimeout(t, 45);
+    }
+  })();
 }
 
-document.getElementById("askBtn").onclick=()=>{
- questionPage.classList.add("show");
+document.getElementById("askBtn").onclick = () => {
+  questionOverlay.classList.add("show");
 };
 
-/* NO teasing */
-noBtn.onmouseover=()=>{
- noBtn.style.position="fixed";
- noBtn.style.left=Math.random()*80+"vw";
- noBtn.style.top=Math.random()*80+"vh";
+/* NO BUTTON FUN */
+noBtn.onmouseover = () => {
+  noBtn.style.position = "fixed";
+  noBtn.style.left = Math.random()*80 + "vw";
+  noBtn.style.top = Math.random()*80 + "vh";
 };
 
 /* YES */
-yesBtn.onclick=()=>{
- confetti({particleCount:200,spread:90,origin:{y:.6}});
- noBtn.style.display="none";
- setTimeout(()=>surprise.classList.add("show"),700);
+yesBtn.onclick = () => {
+  confetti({ particleCount: 180, spread: 80, origin: { y: 0.6 } });
+  noBtn.style.display = "none";
+  setTimeout(() => surpriseOverlay.classList.add("show"), 700);
 };
 
-/* HEARTS */
-setInterval(()=>{
- const h=document.createElement("div");
- h.className="heart-bg";
- h.innerText=["💖","💘","🌹","✨"][Math.floor(Math.random()*4)];
- h.style.left=Math.random()*100+"vw";
- h.style.fontSize=Math.random()*18+14+"px";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),6000);
-},350);
+/* FLOATING HEARTS */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = ["💖","💘","🌹"][Math.floor(Math.random()*3)];
+  h.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}, 500);
 </script>
 
 </body>
