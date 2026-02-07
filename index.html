@@ -239,14 +239,44 @@ const images=[
  "memories/img9.jpg"
 ];
 
-const slides=document.querySelectorAll(".slide");
-let sIndex=0;
-slides.forEach((s,i)=>{ if(images[i]) s.style.backgroundImage=`url('${images[i]}')`;});
-setInterval(()=>{
- slides[sIndex%slides.length].classList.remove("active");
- sIndex++;
- slides[sIndex%slides.length].classList.add("active");
-},3500);
+const images = [
+ "memories/img1.jpg",
+ "memories/img2.jpg",
+ "memories/img3.jpg",
+ "memories/img4.jpg",
+ "memories/img5.jpg",
+ "memories/img6.jpg",
+ "memories/img7.jpg",
+ "memories/img8.jpg",
+ "memories/img9.jpg"
+];
+
+const slides = document.querySelectorAll(".slide");
+let imageIndex = 0;
+
+// preload images (important for smooth mobile)
+images.forEach(src => {
+  const img = new Image();
+  img.src = src;
+});
+
+// initialize first slide
+slides[0].style.backgroundImage = `url('${images[0]}')`;
+slides[0].classList.add("active");
+
+setInterval(() => {
+  const currentSlide = slides[imageIndex % slides.length];
+  currentSlide.classList.remove("active");
+
+  imageIndex++;
+
+  const nextSlide = slides[imageIndex % slides.length];
+  nextSlide.style.backgroundImage =
+    `url('${images[imageIndex % images.length]}')`;
+
+  nextSlide.classList.add("active");
+}, 3500);
+
 
 /* ===== FLOW ===== */
 const startBtn=document.getElementById("startBtn");
