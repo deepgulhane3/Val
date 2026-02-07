@@ -63,14 +63,17 @@ body {
   padding: 10px 16px;
   background: rgba(0,0,0,0.45);
   color: #fff;
-  font-size: 1rem;
-  text-align: center;
   border-radius: 14px;
-  opacity: 0;
+
+  opacity: 0;          /* 👈 HIDDEN BY DEFAULT */
   transition: opacity 0.8s ease;
   z-index: 5;
 }
-.caption.show { opacity: 1; }
+
+.caption.show {
+  opacity: 1;          /* 👈 ONLY VISIBLE WHEN .show IS ADDED */
+}
+
 
 /* ===== FLOATING HEARTS ===== */
 .heart {
@@ -278,9 +281,12 @@ const surpriseOverlay = document.getElementById("surpriseOverlay");
 startBtn.onclick = () => {
   startCard.style.display = "none";
   loveOverlay.classList.add("show");
-  captionEl.style.display = "none";
+
+  captionEl.style.display = "none"; // 👈 hides caption here
   typeLove();
 };
+
+
 
 /* TYPEWRITER */
 const loveText = document.getElementById("loveText");
