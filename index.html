@@ -8,23 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ===== RESET ===== */
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  height: 100vh;
-  height: 100dvh; /* Mobile browser fix */
+  height: 100dvh;
   overflow: hidden;
   font-family: "Poppins", sans-serif;
-  background: #333; /* Dark fallback */
-  
-  /* CHANGE 1: Move content to bottom */
+  background: #000;
+
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; 
+  justify-content: flex-end; /* card lower */
   align-items: center;
-  padding-bottom: 40px; 
+  padding-bottom: 30px;
 }
 
 /* ===== SLIDESHOW ===== */
@@ -38,104 +35,99 @@ body {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center; /* Focus on center of image */
+  background-position: center;
   opacity: 0;
   transition: opacity 1.5s ease-in-out;
 }
+.slide.active { opacity: 1; }
 
-.slide.active {
-  opacity: 1;
-}
-
-/* Dark overlay on slide so text pops */
+/* dark bottom gradient */
 .slideshow::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
-    z-index: 0;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.2) 60%,
+    rgba(0,0,0,0) 100%
+  );
 }
 
 /* ===== FLOATING HEARTS ===== */
 .heart {
   position: fixed;
   bottom: -20px;
-  font-size: 24px;
+  font-size: 22px;
   animation: floatUp 6s linear infinite;
-  opacity: 0.8;
+  opacity: .8;
   z-index: 1;
 }
-
 @keyframes floatUp {
   0% { transform: translateY(0); opacity: 0; }
   20% { opacity: 1; }
   100% { transform: translateY(-110vh); opacity: 0; }
 }
 
-/* ===== CARD (GLASS STYLE) ===== */
+/* ===== CARD ===== */
 .card {
-  /* CHANGE 2: Glassmorphism */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  
-  padding: 25px;
-  border-radius: 20px;
+  background: rgba(255,255,255,0.12); /* MORE transparent */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+
+  padding: 22px;
+  border-radius: 18px;
   text-align: center;
   width: 90%;
   max-width: 420px;
-  
-  /* Animation */
-  animation: slideUp 0.8s ease;
+
+  animation: slideUp .7s ease;
   z-index: 10;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 @keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
+  from { transform: translateY(40px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
 h1 {
   font-family: "Great Vibes", cursive;
-  font-size: 2.8rem;
-  color: #fff; /* White text */
-  margin: 0 0 10px 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Shadow for readability */
+  font-size: 2.6rem;
+  color: #fff;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.7);
 }
 
 p {
-  color: #f0f0f0;
-  font-size: 1.1rem;
-  margin-bottom: 25px;
+  color: #f2f2f2;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
   line-height: 1.5;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-shadow: 0 1px 3px rgba(0,0,0,.8);
 }
 
 /* ===== BUTTONS ===== */
 .buttons {
+  position: relative; /* IMPORTANT */
   display: flex;
-  gap: 15px;
   justify-content: center;
-  position: relative;
-  min-height: 50px;
+  gap: 14px;
+  min-height: 48px;
 }
 
 button {
-  padding: 12px 30px;
-  font-size: 16px;
+  padding: 11px 26px;
+  font-size: 15px;
   border-radius: 50px;
   border: none;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.2s;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform .15s;
 }
 
-button:active {
-    transform: scale(0.95);
-}
+button:active { transform: scale(.95); }
 
 #yesBtn {
   background: #ff416c;
@@ -145,24 +137,23 @@ button:active {
 #noBtn {
   background: white;
   color: #333;
+  position: absolute; /* stays inside card */
 }
 
 /* ===== OVERLAYS ===== */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6); /* Darker dim */
+  background: rgba(0,0,0,.6);
   display: flex;
-  
-  /* Align overlays to bottom too */
   flex-direction: column;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   align-items: center;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
 
   opacity: 0;
   pointer-events: none;
-  transition: opacity .4s ease;
+  transition: opacity .35s ease;
   z-index: 20;
 }
 
@@ -171,19 +162,16 @@ button:active {
   pointer-events: auto;
 }
 
-/* Typewriter specific styles */
-#loveText {
-    text-align: left;
-    min-height: 100px;
-}
-
-/* Surprise Overlay Center (Exception) */
 #surpriseOverlay {
-    justify-content: center; /* Center this one */
-    background: rgba(255, 105, 180, 0.9);
-    padding-bottom: 0;
+  justify-content: center;
+  background: rgba(255,105,180,.9);
 }
 
+/* Typewriter */
+#loveText {
+  text-align: left;
+  min-height: 90px;
+}
 </style>
 </head>
 
@@ -196,37 +184,41 @@ button:active {
   <div class="slide"></div>
 </div>
 
+<!-- START -->
 <div class="card" id="startCard">
-  <h1>Hey Babdiiii... 💖</h1>
-  <p>I have something to ask you...</p>
-  <button id="startBtn" style="background: white; color: #ff416c;">Click Me ✨</button>
+  <h1>Hey Babdiiii 💖</h1>
+  <p>I have something to ask you…</p>
+  <button id="startBtn" style="background:#fff;color:#ff416c">Click Me ✨</button>
 </div>
 
+<!-- LETTER -->
 <div class="overlay" id="loveOverlay">
   <div class="card">
-    <h1>Read this... 💌</h1>
+    <h1>Read this 💌</h1>
     <p id="loveText"></p>
-    <button id="askBtn" style="display:none; margin: 0 auto;">Next ❤️</button>
+    <button id="askBtn" style="display:none;margin:0 auto;">Next ❤️</button>
   </div>
 </div>
 
+<!-- QUESTION -->
 <div class="overlay" id="questionOverlay">
   <div class="card">
     <h1>Will you be my Valentine? 🌹</h1>
     <p>(Please say yes 🥺)</p>
-    <div class="buttons">
+    <div class="buttons" id="btnContainer">
       <button id="yesBtn">Yes ❤️</button>
       <button id="noBtn">No 💔</button>
     </div>
   </div>
 </div>
 
+<!-- SURPRISE -->
 <div class="overlay" id="surpriseOverlay">
-  <div class="card" style="background: white; color: #333;">
-    <h1 style="color: #ff416c; text-shadow: none;">YAYYY! 💖</h1>
-    <p style="color: #555; text-shadow: none;">
-        Check my bag 👜<br>
-        There is a gift for you! ✨
+  <div class="card" style="background:#fff;">
+    <h1 style="color:#ff416c;text-shadow:none;">YAYYY 💖</h1>
+    <p style="color:#555;text-shadow:none;">
+      Check my bag 👜<br>
+      There is a gift for you ✨
     </p>
   </div>
 </div>
@@ -234,8 +226,7 @@ button:active {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-/* ===== CONFIGURATION ===== */
-// REPLACE these with your actual image paths
+/* ===== IMAGES ===== */
 const images=[
  "memories/img1.jpg",
  "memories/img2.jpg",
@@ -248,114 +239,90 @@ const images=[
  "memories/img9.jpg"
 ];
 
+const slides=document.querySelectorAll(".slide");
+let sIndex=0;
+slides.forEach((s,i)=>{ if(images[i]) s.style.backgroundImage=`url('${images[i]}')`;});
+setInterval(()=>{
+ slides[sIndex%slides.length].classList.remove("active");
+ sIndex++;
+ slides[sIndex%slides.length].classList.add("active");
+},3500);
 
-const slides = document.querySelectorAll(".slide");
-let sIndex = 0;
+/* ===== FLOW ===== */
+const startBtn=document.getElementById("startBtn");
+const startCard=document.getElementById("startCard");
+const loveOverlay=document.getElementById("loveOverlay");
+const askBtn=document.getElementById("askBtn");
+const questionOverlay=document.getElementById("questionOverlay");
+const surpriseOverlay=document.getElementById("surpriseOverlay");
 
-// Set images
-slides.forEach((s, i) => {
-    if (images[i]) {
-        s.style.backgroundImage = `url('${images[i]}')`;
-    }
+startBtn.onclick=()=>{
+ startCard.style.display="none";
+ loveOverlay.classList.add("show");
+ typeLove();
+};
+
+/* TYPEWRITER */
+const loveText=document.getElementById("loveText");
+const message=`You make my world brighter just by being in it.
+
+Every moment with you feels special.
+
+I have one question for you…`;
+let i=0;
+function typeLove(){
+ if(i<message.length){
+  loveText.innerHTML+=message[i]==="\n"?"<br>":message[i];
+  i++; setTimeout(typeLove,45);
+ } else {
+  askBtn.style.display="block";
+ }
+}
+
+askBtn.onclick=()=>{
+ loveOverlay.classList.remove("show");
+ questionOverlay.classList.add("show");
+};
+
+/* ===== NO BUTTON INSIDE CARD ===== */
+const noBtn=document.getElementById("noBtn");
+const btnContainer=document.getElementById("btnContainer");
+
+function moveNo(){
+ const box=btnContainer.getBoundingClientRect();
+ const btn=noBtn.getBoundingClientRect();
+
+ const maxX=box.width-btn.width;
+ const maxY=box.height-btn.height;
+
+ noBtn.style.left=Math.random()*maxX+"px";
+ noBtn.style.top=Math.random()*maxY+"px";
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", e=>{
+ e.preventDefault();
+ moveNo();
 });
 
-// Slideshow timer
-setInterval(() => {
-  slides[sIndex % slides.length].classList.remove("active");
-  sIndex++;
-  slides[sIndex % slides.length].classList.add("active");
-}, 3500);
-
-/* ===== FLOW CONTROLS ===== */
-const startCard = document.getElementById("startCard");
-const startBtn = document.getElementById("startBtn");
-const loveOverlay = document.getElementById("loveOverlay");
-const askBtn = document.getElementById("askBtn");
-const questionOverlay = document.getElementById("questionOverlay");
-const surpriseOverlay = document.getElementById("surpriseOverlay");
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-
-/* Step 1: Start -> Show Letter */
-startBtn.onclick = () => {
-    startCard.style.display = "none"; // Hide first card
-    loveOverlay.classList.add("show");
-    typeLove();
+/* YES */
+document.getElementById("yesBtn").onclick=()=>{
+ confetti({particleCount:150,spread:70,origin:{y:.6}});
+ setTimeout(()=>{
+  questionOverlay.classList.remove("show");
+  surpriseOverlay.classList.add("show");
+ },900);
 };
 
-/* Step 2: Letter Typewriter */
-const loveText = document.getElementById("loveText");
-const message = 
-`You make my world brighter just by being in it. 
-
-I cherish every moment we spend together. 
-
-I have a question for you...`;
-
-let charIndex = 0;
-function typeLove() {
-  if (charIndex < message.length) {
-    loveText.innerHTML += message.charAt(charIndex) === "\n" ? "<br>" : message.charAt(charIndex);
-    charIndex++;
-    setTimeout(typeLove, 50);
-  } else {
-    // Show button when typing is done
-    askBtn.style.display = "block";
-  }
-}
-
-/* Step 3: Letter -> Question */
-askBtn.onclick = () => {
-    loveOverlay.classList.remove("show");
-    questionOverlay.classList.add("show");
-};
-
-/* Step 4: The Prank (No Button) */
-noBtn.addEventListener("touchstart", moveNoButton); // Mobile
-noBtn.addEventListener("mouseover", moveNoButton); // Desktop
-
-function moveNoButton(e) {
-    if(e) e.preventDefault(); // Prevent clicking on mobile
-    
-    // Get visible screen dimensions
-    const width = window.innerWidth - 80;
-    const height = window.innerHeight - 80;
-    
-    // Calculate random position
-    const newX = Math.random() * width; 
-    const newY = Math.random() * height;
-    
-    noBtn.style.position = "fixed";
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
-}
-
-/* Step 5: Success */
-yesBtn.onclick = () => {
-    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-    
-    // Hide buttons
-    yesBtn.style.display = "none";
-    noBtn.style.display = "none";
-
-    // Show Surprise after short delay
-    setTimeout(() => {
-        questionOverlay.classList.remove("show");
-        surpriseOverlay.classList.add("show");
-    }, 1000);
-};
-
-/* Background Hearts */
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = ["💖","✨","🌹"][Math.floor(Math.random()*3)];
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}
-setInterval(createHeart, 600);
-
+/* HEARTS */
+setInterval(()=>{
+ const h=document.createElement("div");
+ h.className="heart";
+ h.innerText=["💖","✨","🌹"][Math.floor(Math.random()*3)];
+ h.style.left=Math.random()*100+"vw";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+},650);
 </script>
 
 </body>
