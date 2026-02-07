@@ -19,7 +19,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* card lower */
+  justify-content: flex-end;
   align-items: center;
   padding-bottom: 30px;
 }
@@ -41,7 +41,6 @@ body {
 }
 .slide.active { opacity: 1; }
 
-/* dark bottom gradient */
 .slideshow::after {
   content: "";
   position: absolute;
@@ -53,6 +52,25 @@ body {
     rgba(0,0,0,0) 100%
   );
 }
+
+/* ===== CAPTION ===== */
+.caption {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 90%;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 5;
+}
+.caption.show { opacity: 1; }
 
 /* ===== FLOATING HEARTS ===== */
 .heart {
@@ -71,25 +89,16 @@ body {
 
 /* ===== CARD ===== */
 .card {
-  background: rgba(255,255,255,0.12); /* MORE transparent */
+  background: rgba(255,255,255,0.12);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.25);
-
   padding: 22px;
   border-radius: 18px;
   text-align: center;
   width: 90%;
   max-width: 420px;
-
-  animation: slideUp .7s ease;
   z-index: 10;
-  margin-bottom: 10px;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 h1 {
@@ -110,7 +119,7 @@ p {
 
 /* ===== BUTTONS ===== */
 .buttons {
-  position: relative; /* IMPORTANT */
+  position: relative;
   display: flex;
   justify-content: center;
   gap: 14px;
@@ -124,10 +133,7 @@ button {
   border: none;
   cursor: pointer;
   font-weight: 600;
-  transition: transform .15s;
 }
-
-button:active { transform: scale(.95); }
 
 #yesBtn {
   background: #ff416c;
@@ -137,7 +143,7 @@ button:active { transform: scale(.95); }
 #noBtn {
   background: white;
   color: #333;
-  position: absolute; /* stays inside card */
+  position: absolute;
 }
 
 /* ===== OVERLAYS ===== */
@@ -150,13 +156,11 @@ button:active { transform: scale(.95); }
   justify-content: flex-end;
   align-items: center;
   padding-bottom: 30px;
-
   opacity: 0;
   pointer-events: none;
   transition: opacity .35s ease;
   z-index: 20;
 }
-
 .overlay.show {
   opacity: 1;
   pointer-events: auto;
@@ -166,23 +170,19 @@ button:active { transform: scale(.95); }
   justify-content: center;
   background: rgba(255,105,180,.9);
 }
-
-/* Typewriter */
-#loveText {
-  text-align: left;
-  min-height: 90px;
-}
 </style>
 </head>
 
 <body>
 
 <div class="slideshow">
-  <div class="slide active"></div>
+  <div class="slide"></div>
   <div class="slide"></div>
   <div class="slide"></div>
   <div class="slide"></div>
 </div>
+
+<div class="caption" id="captionText"></div>
 
 <!-- START -->
 <div class="card" id="startCard">
@@ -226,121 +226,117 @@ button:active { transform: scale(.95); }
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-/* ===== IMAGES ===== */
-const images=[
- "memories/img1.jpg",
- "memories/img2.jpg",
- "memories/img3.jpg",
- "memories/img4.jpg",
- "memories/img5.jpg",
- "memories/img6.jpg",
- "memories/img7.jpg",
- "memories/img8.jpg",
- "memories/img9.jpg"
+/* ===== MEMORIES WITH CAPTIONS ===== */
+const memories = [
+  { src: "memories/img1.jpg", caption: "The day you smiled at me 💖" },
+  { src: "memories/img2.jpg", caption: "A moment I’ll never forget ✨" },
+  { src: "memories/img3.jpg", caption: "Where everything felt right 🌹" },
+  { src: "memories/img4.jpg", caption: "You made this day special 💕" },
+  { src: "memories/img5.jpg", caption: "Just us and happiness 🥰" },
+  { src: "memories/img6.jpg", caption: "Your laugh is my favorite sound 💫" },
+  { src: "memories/img7.jpg", caption: "Every memory feels like home 🏡" },
+  { src: "memories/img8.jpg", caption: "I wish time stopped here 💞" },
+  { src: "memories/img9.jpg", caption: "My favorite chapter… you ❤️" }
 ];
 
 const slides = document.querySelectorAll(".slide");
-let imageIndex = 0;
+const captionEl = document.getElementById("captionText");
+let index = 0;
 
-// preload images (important for smooth mobile)
-images.forEach(src => {
-  const img = new Image();
-  img.src = src;
-});
+// preload
+memories.forEach(m => { const i = new Image(); i.src = m.src; });
 
-// initialize first slide
-slides[0].style.backgroundImage = `url('${images[0]}')`;
+// init
+slides[0].style.backgroundImage = `url('${memories[0].src}')`;
 slides[0].classList.add("active");
+captionEl.innerText = memories[0].caption;
+captionEl.classList.add("show");
 
 setInterval(() => {
-  const currentSlide = slides[imageIndex % slides.length];
-  currentSlide.classList.remove("active");
+  slides[index % slides.length].classList.remove("active");
+  index++;
 
-  imageIndex++;
+  const slide = slides[index % slides.length];
+  slide.style.backgroundImage = `url('${memories[index % memories.length].src}')`;
+  slide.classList.add("active");
 
-  const nextSlide = slides[imageIndex % slides.length];
-  nextSlide.style.backgroundImage =
-    `url('${images[imageIndex % images.length]}')`;
-
-  nextSlide.classList.add("active");
+  captionEl.classList.remove("show");
+  setTimeout(() => {
+    captionEl.innerText = memories[index % memories.length].caption;
+    captionEl.classList.add("show");
+  }, 300);
 }, 3500);
 
-
 /* ===== FLOW ===== */
-const startBtn=document.getElementById("startBtn");
-const startCard=document.getElementById("startCard");
-const loveOverlay=document.getElementById("loveOverlay");
-const askBtn=document.getElementById("askBtn");
-const questionOverlay=document.getElementById("questionOverlay");
-const surpriseOverlay=document.getElementById("surpriseOverlay");
+const startBtn = document.getElementById("startBtn");
+const startCard = document.getElementById("startCard");
+const loveOverlay = document.getElementById("loveOverlay");
+const askBtn = document.getElementById("askBtn");
+const questionOverlay = document.getElementById("questionOverlay");
+const surpriseOverlay = document.getElementById("surpriseOverlay");
 
-startBtn.onclick=()=>{
- startCard.style.display="none";
- loveOverlay.classList.add("show");
- typeLove();
+startBtn.onclick = () => {
+  startCard.style.display = "none";
+  loveOverlay.classList.add("show");
+  captionEl.style.display = "none";
+  typeLove();
 };
 
 /* TYPEWRITER */
-const loveText=document.getElementById("loveText");
-const message=`You make my world brighter just by being in it.
+const loveText = document.getElementById("loveText");
+const message = `You make my world brighter just by being in it.
 
 Every moment with you feels special.
 
 I have one question for you…`;
-let i=0;
-function typeLove(){
- if(i<message.length){
-  loveText.innerHTML+=message[i]==="\n"?"<br>":message[i];
-  i++; setTimeout(typeLove,45);
- } else {
-  askBtn.style.display="block";
- }
+let i = 0;
+function typeLove() {
+  if (i < message.length) {
+    loveText.innerHTML += message[i] === "\n" ? "<br>" : message[i];
+    i++;
+    setTimeout(typeLove, 45);
+  } else {
+    askBtn.style.display = "block";
+  }
 }
 
-askBtn.onclick=()=>{
- loveOverlay.classList.remove("show");
- questionOverlay.classList.add("show");
+askBtn.onclick = () => {
+  loveOverlay.classList.remove("show");
+  questionOverlay.classList.add("show");
 };
 
-/* ===== NO BUTTON INSIDE CARD ===== */
-const noBtn=document.getElementById("noBtn");
-const btnContainer=document.getElementById("btnContainer");
+/* NO BUTTON INSIDE CARD */
+const noBtn = document.getElementById("noBtn");
+const btnContainer = document.getElementById("btnContainer");
 
-function moveNo(){
- const box=btnContainer.getBoundingClientRect();
- const btn=noBtn.getBoundingClientRect();
-
- const maxX=box.width-btn.width;
- const maxY=box.height-btn.height;
-
- noBtn.style.left=Math.random()*maxX+"px";
- noBtn.style.top=Math.random()*maxY+"px";
+function moveNo() {
+  const box = btnContainer.getBoundingClientRect();
+  const btn = noBtn.getBoundingClientRect();
+  noBtn.style.left = Math.random() * (box.width - btn.width) + "px";
+  noBtn.style.top = Math.random() * (box.height - btn.height) + "px";
 }
 
 noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", e=>{
- e.preventDefault();
- moveNo();
-});
+noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
 /* YES */
-document.getElementById("yesBtn").onclick=()=>{
- confetti({particleCount:150,spread:70,origin:{y:.6}});
- setTimeout(()=>{
-  questionOverlay.classList.remove("show");
-  surpriseOverlay.classList.add("show");
- },900);
+document.getElementById("yesBtn").onclick = () => {
+  confetti({ particleCount: 150, spread: 70, origin: { y: .6 } });
+  setTimeout(() => {
+    questionOverlay.classList.remove("show");
+    surpriseOverlay.classList.add("show");
+  }, 900);
 };
 
 /* HEARTS */
-setInterval(()=>{
- const h=document.createElement("div");
- h.className="heart";
- h.innerText=["💖","✨","🌹"][Math.floor(Math.random()*3)];
- h.style.left=Math.random()*100+"vw";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),6000);
-},650);
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = ["💖","✨","🌹"][Math.floor(Math.random()*3)];
+  h.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}, 650);
 </script>
 
 </body>
